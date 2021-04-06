@@ -1,0 +1,50 @@
+{% include 'sections/navigation.twig' %}
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<h4>Person you looked for:</h4>
+<form method="get">
+    <table>
+        <thead style="display: table-header-group">
+        <tr>
+            <th>Number</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Personal code</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            {% set number = 0 %}
+         {% for person in persons %}
+             {% set number = number + 1 %}
+        <tr class="persons">
+            <td>{{ number }}</td>
+            <td>{{ person.getName }}</td>
+            <td>{{ person.getSurname }}</td>
+            <td>{{ person.personalCode }}</td>
+            <td>{{ person.getAge }}</td>
+            <td>{{ person.getAddress }}</td>
+            <td>{{ person.getDescription }}</td>
+            <td>
+                <button formaction="/personInfo/update" type="submit" name="update"
+                        value="{{ person.getPersonalCode }}">Update
+                </button>
+            </td>
+            <td>
+                <button formaction="/personInfo/delete" type="submit" name="delete"
+                        value="{{ person.getPersonalCode }}">Delete
+                </button>
+            </td>
+        </tr>
+       {% endfor %}
+        </tbody>
+    </table>
+    <br>
+</form>

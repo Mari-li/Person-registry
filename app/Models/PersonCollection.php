@@ -25,6 +25,8 @@ class PersonCollection
                     $onePerson->getName(),
                     $onePerson->getSurname(),
                     $onePerson->getPersonalCode(),
+                    $onePerson->getAge(),
+                    $onePerson->getAddress(),
                     $onePerson->getDescription());
             }
         }

@@ -1,0 +1,106 @@
+{% extends 'base.twig' %}
+{% block title %} Search {% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            flex-direction: column;
+            align-items: normal;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
+
+        form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: cadetblue;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+        }
+
+        form.example button:hover {
+            background: darkcyan;
+        }
+
+        form.example::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        p {
+            margin: auto;
+            max-width: 400px;
+            text-align: center
+        }
+    </style>
+{% endblock %}
+
+{% block topnav %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="w-full max-w-xs">
+        <h2>Search Person</h2>
+        <br>
+        <p>Search by firstname: </p>
+        <form class="example" action="/search/personInfo" method="post"
+              style="margin:auto;max-width:400px;text-align:center">
+            <input type="text" placeholder="Search.." name="name">
+            <button type="submit" value="name"><i class="fa fa-search"></i></button>
+        </form>
+        <br>
+        <p>Search by lastname:</p>
+        <form class="example" action="/search/personInfo" method="post"
+              style="margin:auto;max-width:400px;text-align:center">
+            <input type="text" placeholder="Search.." name="surname">
+            <button type="submit" value="surname"><i class="fa fa-search"></i></button>
+        </form>
+        <br>
+        <p>Search by personal code:</p>
+        <form class="example" action="/search/personInfo" method="post"
+              style="margin:auto;max-width:400px;text-align:center">
+            <input type="text" placeholder="Search.." name="personal_code">
+            <button type="submit" value="personal_code"><i class="fa fa-search"></i></button>
+        </form>
+        <br>
+        <p>Search by age:</p>
+        <form class="example" action="/search/personInfo" method="post"
+              style="margin:auto;max-width:400px;text-align:center">
+            <input type="text" placeholder="Search.." name="age">
+            <button type="submit" value="age"><i class="fa fa-search"></i></button>
+        </form>
+        <br>
+        <p>Search by address:</p>
+        <form class="example" action="/search/personInfo" method="post"
+              style="margin:auto;max-width:400px;text-align:center">
+            <input type="text" placeholder="Search.." name="address">
+            <button type="submit" value="address"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+{% endblock %}

@@ -1,20 +1,23 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use App\Controllers\HomeController;
 use App\Controllers\PersonController;
 use App\Repositories\Persons\MysqlPersonsRepository;
 use App\Repositories\Persons\PersonsRepository;
 use App\Services\Persons\PersonService;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 
 $container = new League\Container\Container;
-
+$container->add('loader', FilesystemLoader::class )->addArgument('/mnt/c/projects/person-registry/app/Views/');
+$container->add('twig', Environment::class)->addArgument('loader');
 $container->add(PersonsRepository::class, MysqlPersonsRepository::class);
 $container->add(PersonService::class, PersonService::class)->addArgument(PersonsRepository::class);
-$container->add(PersonController::class, PersonController::class)->addArgument(PersonService::class);
-$container->add(HomeController::class, HomeController::class);
+$container->add(PersonController::class, PersonController::class)->addArguments([PersonService::class, 'twig']);
+$container->add(HomeController::class, HomeController::class)->addArgument('twig');
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', [HomeController::class, 'index']);

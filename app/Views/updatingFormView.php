@@ -16,9 +16,9 @@
         <br>
         <p><b>Description</b>
         <p>
-            <input type="text" value="<?= $person->getDescription() ?>" name="description" id="description">
+            <input type="text" value="<?=$person->getDescription()?>" name="description" id="description">
             <br><br>
-            <button type="submit" name="update" value="<?= $person->getPersonalCode() ?> ">Save</button>
+            <button type="submit" name="update" value="<?=$person->getPersonalCode()?>">Save</button>
     </div>
 </form>
 </body>

@@ -2,21 +2,30 @@
 
 namespace App\Controllers;
 
-
+use Twig\Environment;
 
 class HomeController
 {
+    private Environment $twig;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     public function index()
     {
-        require_once 'app/Views/homeView.php';
+        $this->twig->display('homeView.twig');
     }
 
     public function searchForm()
     {
-        require_once 'app/Views/searchingFormView.php';
+        $this->twig->display('search.twig');
     }
+
     public function registrationForm()
     {
-        require_once 'app/Views/registrationFormView.php';
+        $this->twig->display('register.twig');
+
     }
 }

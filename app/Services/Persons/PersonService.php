@@ -19,7 +19,14 @@ class PersonService
 
     public function addPerson(StorePersonRequest $request): Person
     {
-        $person = new Person($request->getName(), $request->getSurname(), $request->getPersonalCode(), $request->getDescription());
+        $person = new Person(
+            $request->getName(),
+            $request->getSurname(),
+            $request->getPersonalCode(),
+            $request->getAge(),
+            $request->getAddress(),
+            $request->getDescription()
+        );
         $this->personsRepository->save($person);
         $this->messages->registerMessage($person);
         return $person;

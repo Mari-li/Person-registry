@@ -1,6 +1,4 @@
-<?php
-?>
-<!DOCTYPE html>
+
 <html lang="">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +29,7 @@
             float: left;
             width: 20%;
             padding: 10px;
-            background: #2196F3;
+            background: cadetblue;
             color: white;
             font-size: 17px;
             border: 1px solid grey;
@@ -71,6 +69,18 @@
 <form class="example" action="/search/personInfo" method="post" style="margin:auto;max-width:400px;text-align:">
     <input type="text" placeholder="Search.." name="personal_code">
     <button type="submit" value="personal_code"><i class="fa fa-search"></i></button>
+</form>
+<br>
+<p>Search by age:</p>
+<form class="example" action="/search/personInfo" method="post" style="margin:auto;max-width:400px;text-align:">
+    <input type="text" placeholder="Search.." name="age">
+    <button type="submit" value="age"><i class="fa fa-search"></i></button>
+</form>
+<br>
+<p>Search by address:</p>
+<form class="example" action="/search/personInfo" method="post" style="margin:auto;max-width:400px;text-align:">
+    <input type="text" placeholder="Search.." name="address">
+    <button type="submit" value="address"><i class="fa fa-search"></i></button>
 </form>
 
 </body>

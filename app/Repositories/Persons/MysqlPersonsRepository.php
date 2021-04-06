@@ -32,6 +32,8 @@ class MysqlPersonsRepository implements PersonsRepository
             'name' => $person->getName(),
             'surname' => $person->getSurname(),
             'personal_code' => $person->getPersonalCode(),
+            'age' => $person->getAge(),
+            'address' => $person->getAddress(),
             'description' => $person->getDescription()
         ]);
     }
@@ -41,11 +43,21 @@ class MysqlPersonsRepository implements PersonsRepository
         $foundPersons = new PersonCollection;
         $foundPersonsArray = $this->database->select(
             'registryPersons',
-            ['name', 'surname', 'personal_code', 'description'],
-            [$key => $parameter]);
+            ['name', 'surname', 'personal_code', 'age', 'address', 'description'],
+            [$key."[~]" => $parameter]);
 
         foreach ($foundPersonsArray as $person) {
-            $foundPersons->add(new Person($person['name'], $person['surname'], $person['personal_code'], $person['description']));
+            $foundPersons->add(
+                new Person(
+                    $person['name'],
+                    $person['surname'],
+                    $person['personal_code'],
+                    $person['age'],
+                    $person['address'],
+                    $person['description'],
+
+                )
+            );
         }
         return $foundPersons;
     }

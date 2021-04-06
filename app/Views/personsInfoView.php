@@ -15,6 +15,8 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Personal code</th>
+                <th>Age</th>
+                <th>Address</th>
                 <th>Description</th>
             </tr>
             </thead>
@@ -27,6 +29,8 @@
                     <td> <?php echo $person->getName(); ?></td>
                     <td> <?php echo $person->getSurname(); ?></td>
                     <td> <?php echo $person->getPersonalCode(); ?></td>
+                    <td> <?php echo $person->getAge();?></td>
+                    <td> <?php echo $person->getAddress();?></td>
                     <td> <?php echo $person->getDescription(); ?></td>
                     <td>
                         <button formaction="/personInfo/update" type="submit" name="update"
@@ -35,7 +39,7 @@
                     </td>
                     <td>
                         <button formaction="/personInfo/delete" type="submit" name="delete"
-                                value="<?= $person->getPersonalCode() ?>">Delete
+                                value="<?= $person->getPersonalCode()?>">Delete
                         </button>
                     </td>
                 </tr>
