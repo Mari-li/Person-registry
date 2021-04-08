@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Messages;
 use App\Services\Persons\StorePersonRequest;
 use App\Services\Persons\PersonService;
 use InvalidArgumentException;
@@ -11,11 +12,13 @@ class PersonController
 {
     private PersonService $service;
     private Environment $twig;
+    private Messages $messages;
 
     public function __construct(PersonService $service, Environment $twig)
     {
         $this->service = $service;
         $this->twig = $twig;
+        $this->messages = new Messages();
     }
 
 
@@ -39,16 +42,16 @@ class PersonController
                 if (!preg_match('/^[0-9 -]*$/', $personalCode)) {
                     throw new InvalidArgumentException('Invalid personal code format.');
                 } else {
-                    $this->service->addPerson(
-                        new StorePersonRequest(
-                            $name,
-                            $surname,
-                            $personalCode,
-                            $age,
-                            $address,
-                            $description
-                        )
+                    $person = new StorePersonRequest(
+                        $name,
+                        $surname,
+                        $personalCode,
+                        $age,
+                        $address,
+                        $description
                     );
+                    $this->service->addPerson($person);
+                    $this->twig->display('messages.twig', ['message' => $this->messages->registerMessage($person)]);
                 }
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -61,24 +64,28 @@ class PersonController
     {
         $mysqlKey = key($_POST);
         $foundedPersons = ($this->service->searchPersons($mysqlKey, $_POST[$mysqlKey]))->getAll();
-        $this->twig->display('personsInfo.twig',['persons'=> $foundedPersons]);
+        if (empty($foundedPersons)) {
+            $this->twig->display('messages.twig', ['message' => $this->messages->notFoundMessage($mysqlKey, $_POST[$mysqlKey])]);
+        } else {
+            $this->twig->display('personsInfo.twig', ['persons' => $foundedPersons]);
+        }
     }
 
 
     public function delete(): void
     {
-        $request = $_GET['delete'];
+        $request = $_POST['delete'];
         $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
         $this->service->deletePerson($person);
+        $this->twig->display('messages.twig', ['message' => $this->messages->deleteMessage($person)]);
     }
 
 
     public function updateForm(): void
     {
-        $request = $_GET['update'];
+        $request = $_POST['update'];
         $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
         $this->twig->display('update.twig', ['person' => $person]);
-       // require_once 'app/Views/updatingFormView.php';
     }
 
     public function update(): void
@@ -86,6 +93,25 @@ class PersonController
         $request = $_POST['update'];
         $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
         $this->service->updatePersonsInformation($person, $_POST['description']);
+        $this->twig->display('messages.twig', ['message' => $this->messages->updateMessage($person)]);
     }
+
+    public function authorize(): void
+    {
+        $this->twig->display('authorize.twig');
+    }
+
+    public function checkAuthorization(): void
+    {
+        $request = $_POST['personal_code'];
+        if (is_null($this->service->searchPersons('personal_code', $request)->getOne($request))) {
+            $this->twig->display('messages.twig', ['message' => $this->messages->notRegistered($request)]);
+        } else {
+            $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
+            $this->twig->display('messages.twig', ['message' => $this->messages->authorized($person)]);
+        }
+    }
+
+
 }
 

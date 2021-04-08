@@ -1,0 +1,30 @@
+{% extends 'base.twig' %}
+
+{% block title %}Update{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+
+    </style>
+
+{% endblock %}
+
+
+
+{% block topnav %}
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="/register">Register</a>
+        <a href="/search">Search</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+{{ message }}
+{% endblock %}
+
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}

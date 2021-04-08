@@ -10,11 +10,17 @@ class Person
     private int $age;
     private string $address;
     private string $description;
-    public function __construct(string $name, string $surname, string $personalCode, int $age, string $address, string $description='No information available')
+
+    public function __construct(
+        string $name,
+        string $surname,
+        string $personalCode, int $age,
+        string $address,
+        string $description = 'No information available')
     {
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->personalCode = $personalCode;
+        $this->setName($name);
+        $this->setSurname($surname);
+        $this->setPersonalCode($personalCode);
         $this->age = $age;
         $this->address = $address;
         $this->description = $description;
@@ -57,9 +63,21 @@ class Person
     }
 
 
-    public function setDescription(string $description): void
+    public function setName($name)
     {
-        $this->description = $description;
+        $this->name = ucfirst(strtolower($name));
+    }
+
+
+    public function setSurname($surname)
+    {
+        $this->surname = ucfirst(strtolower($surname));
+    }
+
+
+    public function setPersonalCode(string $personalCode): void
+    {
+        $this->personalCode = str_replace('-', '', $personalCode);
     }
 
 }

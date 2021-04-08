@@ -2,6 +2,7 @@
 
 require_once '../vendor/autoload.php';
 
+
 use App\Controllers\HomeController;
 use App\Controllers\PersonController;
 use App\Repositories\Persons\MysqlPersonsRepository;
@@ -9,7 +10,6 @@ use App\Repositories\Persons\PersonsRepository;
 use App\Services\Persons\PersonService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-
 
 $container = new League\Container\Container;
 $container->add('loader', FilesystemLoader::class )->addArgument('/mnt/c/projects/person-registry/app/Views/');
@@ -25,9 +25,11 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/register', [HomeController::class, 'registrationForm']);
     $r->addRoute('POST', '/register/personInfo', [PersonController::class, 'register']);
     $r->addRoute('POST', '/search/personInfo', [PersonController::class, 'search']);
-    $r->addRoute('GET', '/personInfo/update', [PersonController::class, 'updateForm']);
-    $r->addRoute('GET', '/personInfo/delete', [PersonController::class, 'delete']);
+    $r->addRoute('POST', '/personInfo/update', [PersonController::class, 'updateForm']);
+    $r->addRoute('POST', '/personInfo/delete', [PersonController::class, 'delete']);
     $r->addRoute('POST', '/search/personInfo/updateInfo', [PersonController::class, 'update']);
+    $r->addRoute('GET', '/authorize', [PersonController::class, 'authorize']);
+    $r->addRoute('POST', '/authorize/check', [PersonController::class, 'checkAuthorization']);
 });
 
 

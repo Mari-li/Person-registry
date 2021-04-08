@@ -1,50 +1,106 @@
-{% include 'sections/navigation.twig' %}
-<style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-</style>
-<h4>Person you looked for:</h4>
-<form method="get">
-    <table>
-        <thead style="display: table-header-group">
-        <tr>
-            <th>Number</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Personal code</th>
-            <th>Age</th>
-            <th>Address</th>
-            <th>Description</th>
-        </tr>
-        </thead>
-        <tbody>
+{% extends 'base.twig' %}
 
-            {% set number = 0 %}
-         {% for person in persons %}
-             {% set number = number + 1 %}
-        <tr class="persons">
-            <td>{{ number }}</td>
-            <td>{{ person.getName }}</td>
-            <td>{{ person.getSurname }}</td>
-            <td>{{ person.personalCode }}</td>
-            <td>{{ person.getAge }}</td>
-            <td>{{ person.getAddress }}</td>
-            <td>{{ person.getDescription }}</td>
-            <td>
-                <button formaction="/personInfo/update" type="submit" name="update"
-                        value="{{ person.getPersonalCode }}">Update
-                </button>
-            </td>
-            <td>
-                <button formaction="/personInfo/delete" type="submit" name="delete"
-                        value="{{ person.getPersonalCode }}">Delete
-                </button>
-            </td>
-        </tr>
-       {% endfor %}
-        </tbody>
-    </table>
-    <br>
+{% block title %}Search results{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block content %}
+    <p class="text-3xl text-center p-3">Search results:</p>
+<form method="post">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Number
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Name
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Surname
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Personal code
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Age
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Address
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-darkgray-500 uppercase">
+                                Description
+                            </th>
+
+                            <th scope="col" class="relative px-6 py-3">
+                                <span class="sr-only">Update</span>
+                            </th>
+                            <th scope="col" class="relative px-6 py-3">
+                                <span class="sr-only">Delete</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        {% set number = 0 %}
+                        {% for person in persons %}
+                            {% set number = number + 1 %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ number }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ person.name }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ person.surname }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ person.personalCode }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ person.age }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ person.address }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ person.description }}
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-indigo-600 hover:text-indigo-900"
+                                            formaction="/personInfo/update" type="submit" name="update"
+                                            value="{{ person.personalCode }}">Update
+                                    </button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-indigo-600 hover:text-indigo-900"
+                                            formaction="/personInfo/delete" type="submit" name="delete"
+                                            value="{{ person.personalCode }}">Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
+    {% endblock %}
+

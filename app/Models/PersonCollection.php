@@ -17,10 +17,10 @@ class PersonCollection
 
     }
 
-    public function getOne($personalCode): Person
+    public function getOne($personalCode): ?Person
     {
         foreach ($this->getAll() as $onePerson) {
-            if ($onePerson->getPersonalCode() === $personalCode) {
+            if ($onePerson->getPersonalCode() == $personalCode) {
                 $person = new Person(
                     $onePerson->getName(),
                     $onePerson->getSurname(),

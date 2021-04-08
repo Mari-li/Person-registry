@@ -16,8 +16,8 @@ class MysqlPersonsRepository implements PersonsRepository
             'database_type' => 'mysql',
             'database_name' => 'person_registry',
             'server' => 'localhost',
-            'username' => 'marija',
-            'password' => 'mzm08111'
+            'username' => '',
+            'password' => ''
         ]);
     }
 
@@ -55,7 +55,6 @@ class MysqlPersonsRepository implements PersonsRepository
                     $person['age'],
                     $person['address'],
                     $person['description'],
-
                 )
             );
         }

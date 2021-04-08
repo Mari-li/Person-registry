@@ -28,30 +28,23 @@ class PersonService
             $request->getDescription()
         );
         $this->personsRepository->save($person);
-        $this->messages->registerMessage($person);
         return $person;
     }
 
     public function searchPersons($mysqlKey, string $requestParameter): PersonCollection
     {
-        $persons = $this->personsRepository->get($mysqlKey, $requestParameter);
-        if (empty($persons->getAll())) {
-            $this->messages->notFoundMessage($mysqlKey, $requestParameter);
-            exit;
-        }
-        return $persons;
+        return $this->personsRepository->get($mysqlKey, $requestParameter);
+
     }
 
     public function deletePerson(Person $person): void
     {
         $this->personsRepository->delete($person);
-        $this->messages->deleteMessage($person);
     }
 
     public function updatePersonsInformation(Person $person, $request): void
     {
         $this->personsRepository->edit($person, $request);
-        $this->messages->updateMessage($person);
     }
 
 }

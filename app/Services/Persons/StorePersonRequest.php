@@ -13,8 +13,8 @@ class StorePersonRequest
 
     public function __construct(string $name, string $surname, string $personalCode, int $age, string $address, string $description)
    {
-       $this->setName($name);
-       $this->setSurname($surname);
+       $this->name = $name;
+       $this->surname = $surname;
        $this->personalCode = $personalCode;
        $this->age = $age;
        $this->address = $address;
@@ -56,17 +56,5 @@ class StorePersonRequest
     {
         return $this->description;
     }
-
-    public function setName($name)
-    {
-        $this->name = ucfirst(strtolower($name));
-    }
-
-    public function setSurname($surname)
-    {
-        $this->surname = ucfirst(strtolower($surname));
-    }
-
-
 
 }

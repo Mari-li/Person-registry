@@ -26,6 +26,5 @@ class HomeController
     public function registrationForm()
     {
         $this->twig->display('register.twig');
-
     }
 }

@@ -1,29 +1,52 @@
+{% extends 'base.twig' %}
 
-{% include 'sections/navigation.twig' %}
-<body>
-<h3>{{ person.getName}} {{ person.getSurname }} profile</h3>
-<form action="/search/personInfo/updateInfo" method="post">
-    <div class="container">
-        <p><b>Name</b></p>
-        <input type="text" value="{{ person.getName }}" id="name" disabled>
-        <br>
-        <p><b>Surname</b></p>
-        <input type="text" value="{{ person.getSurname }}" name="surname" id="surname" disabled>
-        <br>
-        <p><b>Personal code</b></p>
-        <input type="text" value="{{ person.getPersonalCode }}" name="personal_code" id="personalCode" disabled>
-        <br>
-        <p><b>Age</b></p>
-        <input type="text" value="{{ person.getAge }}" name="age" id="age" disabled>
-        <br>
-        <p><b>Address</b></p>
-        <input type="text" value="{{ person.getAddress }}" name="address" id="address" disabled>
-        <br>
-        <p><b>Description</b>
-        <p>
-            <input type="text" value="{{ person.getDescription }}" name="description" id="description">
-            <br><br>
-            <button type="submit" name="update" value="{{ person.getPersonalCode }}">Save</button>
+{% block title %} Update {% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
+        <h1 class="font-bold text-center text-2xl mb-5">{{ person.getName }} {{ person.getSurname }} profile</h1>
+        <div class="shadow w-full rounded-lg divide-y divide-gray-200">
+            <div class="px-5 py-7">
+                <form action="/search/personInfo/updateInfo" method="post">
+                    <label class="font-semibold text-sm text-gray-600 pb-1 block">Name</label>
+                    <input type="text" value="{{ person.getName }}" id="name" disabled
+                           class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+
+                    <label class="font-semibold text-sm text-gray-600 pb-1 block">Surname</label>
+                    <input type="text" value="{{ person.getSurname }}" name="surname" id="surname" disabled
+                           class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+
+                    <label class="font-semibold text-sm text-gray-600 pb-1 block">Personal code</label>
+                    <input type="text" value="{{ person.getPersonalCode }}" name="personal_code" id="personalCode"
+                           disabled class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+
+                    <label class="font-semibold text-sm text-gray-600 pb-1 block">Age</label>
+                    <input type="text" value="{{ person.getAge }}" name="age" id="age" disabled
+                           class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+
+                    <label class="font-semibold text-sm text-gray-600 pb-1 block">Address</label>
+                    <input type="text" value="{{ person.getAddress }}" name="address" id="address" disabled
+                           class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+
+                    <label class="font-semibold text-sm text-gray-600 pb-1 block">Description</label>
+                    <input type="text" value="{{ person.getDescription }}" name="description" id="description"
+                           class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+
+                    <button type="submit" name="update" value="{{ person.getPersonalCode }}"
+                            class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                        Save
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-</form>
-</body>
+
+{% endblock %}
+
+
