@@ -16,17 +16,13 @@ class MysqlPersonsRepository implements PersonsRepository
             'database_type' => 'mysql',
             'database_name' => 'person_registry',
             'server' => 'localhost',
-            'username' => '',
-            'password' => ''
+            'username' => 'marija',
+            'password' => 'mzm08111'
         ]);
     }
 
-    public function getData(): array
-    {
-        return $this->database->select('registryPersons', '*');
-    }
 
-    public function save(Person $person): void
+    public function add(Person $person): void
     {
         $this->database->insert('registryPersons', [
             'name' => $person->getName(),

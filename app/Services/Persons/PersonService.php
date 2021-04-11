@@ -9,12 +9,10 @@ use App\Repositories\Persons\PersonsRepository;
 class PersonService
 {
     private PersonsRepository $personsRepository;
-    private Messages $messages;
 
     public function __construct(PersonsRepository $personsRepository)
     {
         $this->personsRepository = $personsRepository;
-        $this->messages = new Messages;
     }
 
     public function addPerson(StorePersonRequest $request): Person
@@ -27,14 +25,13 @@ class PersonService
             $request->getAddress(),
             $request->getDescription()
         );
-        $this->personsRepository->save($person);
+        $this->personsRepository->add($person);
         return $person;
     }
 
     public function searchPersons($mysqlKey, string $requestParameter): PersonCollection
     {
         return $this->personsRepository->get($mysqlKey, $requestParameter);
-
     }
 
     public function deletePerson(Person $person): void

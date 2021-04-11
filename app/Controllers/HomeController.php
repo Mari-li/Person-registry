@@ -15,16 +15,16 @@ class HomeController
 
     public function index()
     {
-        $this->twig->display('homeView.twig');
+        $this->twig->display('HomeView.twig');
     }
 
     public function searchForm()
     {
-        $this->twig->display('search.twig');
+        $this->twig->display('SearchingFormView.twig');
     }
 
     public function registrationForm()
     {
-        $this->twig->display('register.twig');
+        $this->twig->display('RegistrationFormView.twig');
     }
 }

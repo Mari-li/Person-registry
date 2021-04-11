@@ -6,7 +6,7 @@ use App\Models\PersonCollection;
 
 interface PersonsRepository
 {
-    public function save(Person $person): void;
+    public function add(Person $person): void;
     public function delete(Person $person): void;
     public function get(string $key, string $parameter): PersonCollection;
     public function edit(Person $person, $request): void;

@@ -2,12 +2,17 @@
 
 require_once '../vendor/autoload.php';
 
+session_start();
 
 use App\Controllers\HomeController;
 use App\Controllers\PersonController;
+use App\Repositories\OTP\MysqlOTPRepository;
+use App\Repositories\OTP\OTPRepository;
 use App\Repositories\Persons\MysqlPersonsRepository;
 use App\Repositories\Persons\PersonsRepository;
+use App\Services\Persons\PersonLoginService;
 use App\Services\Persons\PersonService;
+use App\Services\Tokens\OTPService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -15,8 +20,10 @@ $container = new League\Container\Container;
 $container->add('loader', FilesystemLoader::class )->addArgument('/mnt/c/projects/person-registry/app/Views/');
 $container->add('twig', Environment::class)->addArgument('loader');
 $container->add(PersonsRepository::class, MysqlPersonsRepository::class);
+$container->add(OTPRepository::class, MysqlOTPRepository::class);
 $container->add(PersonService::class, PersonService::class)->addArgument(PersonsRepository::class);
-$container->add(PersonController::class, PersonController::class)->addArguments([PersonService::class, 'twig']);
+$container->add(PersonLoginService::class, PersonLoginService::class)->addArguments([PersonsRepository::class, OTPRepository::class]);
+$container->add(PersonController::class, PersonController::class)->addArguments([PersonService::class, PersonLoginService::class, 'twig']);
 $container->add(HomeController::class, HomeController::class)->addArgument('twig');
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
@@ -29,7 +36,10 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('POST', '/personInfo/delete', [PersonController::class, 'delete']);
     $r->addRoute('POST', '/search/personInfo/updateInfo', [PersonController::class, 'update']);
     $r->addRoute('GET', '/authorize', [PersonController::class, 'authorize']);
-    $r->addRoute('POST', '/authorize/check', [PersonController::class, 'checkAuthorization']);
+    $r->addRoute('POST', '/authorize', [PersonController::class, 'authorize']);
+    $r->addRoute('GET', '/secretPage', [PersonController::class, 'secret']);
+    $r->addRoute('GET', '/logout', [PersonController::class, 'logout']);
+
 });
 
 

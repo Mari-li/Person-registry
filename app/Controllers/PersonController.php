@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Messages;
+use App\Services\Persons\PersonLoginService;
 use App\Services\Persons\StorePersonRequest;
 use App\Services\Persons\PersonService;
 use InvalidArgumentException;
@@ -10,13 +11,15 @@ use Twig\Environment;
 
 class PersonController
 {
-    private PersonService $service;
+    private PersonService $personService;
+    private PersonLoginService $personLoginService;
     private Environment $twig;
     private Messages $messages;
 
-    public function __construct(PersonService $service, Environment $twig)
+    public function __construct(PersonService $personService, PersonLoginService $personLoginService, Environment $twig)
     {
-        $this->service = $service;
+        $this->personService = $personService;
+        $this->personLoginService = $personLoginService;
         $this->twig = $twig;
         $this->messages = new Messages();
     }
@@ -50,7 +53,7 @@ class PersonController
                         $address,
                         $description
                     );
-                    $this->service->addPerson($person);
+                    $this->personService->addPerson($person);
                     $this->twig->display('messages.twig', ['message' => $this->messages->registerMessage($person)]);
                 }
             } catch (InvalidArgumentException $e) {
@@ -63,11 +66,11 @@ class PersonController
     public function search(): void
     {
         $mysqlKey = key($_POST);
-        $foundedPersons = ($this->service->searchPersons($mysqlKey, $_POST[$mysqlKey]))->getAll();
+        $foundedPersons = ($this->personService->searchPersons($mysqlKey, $_POST[$mysqlKey]))->getAll();
         if (empty($foundedPersons)) {
             $this->twig->display('messages.twig', ['message' => $this->messages->notFoundMessage($mysqlKey, $_POST[$mysqlKey])]);
         } else {
-            $this->twig->display('personsInfo.twig', ['persons' => $foundedPersons]);
+            $this->twig->display('PersonsInfoView.twig', ['persons' => $foundedPersons]);
         }
     }
 
@@ -75,8 +78,8 @@ class PersonController
     public function delete(): void
     {
         $request = $_POST['delete'];
-        $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
-        $this->service->deletePerson($person);
+        $person = $this->personService->searchPersons('personal_code', $request)->getOne($request);
+        $this->personService->deletePerson($person);
         $this->twig->display('messages.twig', ['message' => $this->messages->deleteMessage($person)]);
     }
 
@@ -84,34 +87,65 @@ class PersonController
     public function updateForm(): void
     {
         $request = $_POST['update'];
-        $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
-        $this->twig->display('update.twig', ['person' => $person]);
+        $person = $this->personService->searchPersons('personal_code', $request)->getOne($request);
+        $this->twig->display('UpdateInfoView.twig', ['person' => $person]);
     }
+
 
     public function update(): void
     {
         $request = $_POST['update'];
-        $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
-        $this->service->updatePersonsInformation($person, $_POST['description']);
+        $person = $this->personService->searchPersons('personal_code', $request)->getOne($request);
+        $this->personService->updatePersonsInformation($person, $_POST['description']);
         $this->twig->display('messages.twig', ['message' => $this->messages->updateMessage($person)]);
     }
 
+
     public function authorize(): void
     {
-        $this->twig->display('authorize.twig');
+        if (isset ($_POST['login'])) {
+            $request = $_POST['personal_code'];
+            $person = $this->personLoginService->checkIfRegistered($request);
+            if (is_null($person)) {
+                $message = $this->messages->notRegistered($request);
+            } else {
+                $identifier = $person->getPersonalCode();
+                $otp = $this->personLoginService->createOTP($identifier);
+                $this->personLoginService->storeOTP($otp, $identifier);
+                $link = $this->personLoginService->createOTPlink($identifier);
+                $_SESSION['name'] = $person->getName();
+                $_SESSION['otp'] = $otp->getToken();
+            }
+        }
+        if($_SERVER["REQUEST_METHOD"] != "POST" && isset($_SESSION['name']))
+        {
+            $message = $this->messages->notValidOTP();
+            unset($_SESSION['name']);
+        }
+        $this->twig->display('AuthorizationFormView.twig', ['link' => $link, 'message' => $message]);
     }
 
-    public function checkAuthorization(): void
+
+    public function secret(): void
     {
-        $request = $_POST['personal_code'];
-        if (is_null($this->service->searchPersons('personal_code', $request)->getOne($request))) {
-            $this->twig->display('messages.twig', ['message' => $this->messages->notRegistered($request)]);
-        } else {
-            $person = $this->service->searchPersons('personal_code', $request)->getOne($request);
-            $this->twig->display('messages.twig', ['message' => $this->messages->authorized($person)]);
+        if (isset($_SESSION['otp'])) {
+            $request = $_SESSION['otp'];
+            $name = $_SESSION['name'];
+            if ($this->personLoginService->validateOTP($request)) {
+                $this->twig->display('SecretPageView.twig', ['name' => $name]);
+            } else {
+                unset($_SESSION['otp']);
+                header('Location:/authorize');
+            }
         }
     }
 
 
-}
+    public function logout(): void
+    {
+        session_start();
+        session_destroy();
+        header('Location:/authorize');
+    }
 
+}

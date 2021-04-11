@@ -1,10 +1,10 @@
-{% extends 'base.twig' %}
+{% extends 'Base.twig' %}
 
 {% block content %}
 
         <div class="flex flex-1 items-center justify-center">
 
-                <form class="text-center" action="authorize/check" method="post">
+                <form class="text-center" action="" method="post">
                     <p class="text-3xl p-2 ">Authorization</p>
                     <div class="py-2 text-left">
 
@@ -12,17 +12,18 @@
                                class="bg-gray-200 border-2 border-gray-100 focus:outline-none bg-gray-100 block w-full py-2 px-4 rounded-lg focus:border-gray-700 "
                                placeholder="Personal code"/>
                     </div>
-                    {# <div class="py-2 text-left"> #}
-                    {# <input type="password" class="bg-gray-200 border-2 border-gray-100 focus:outline-none bg-gray-100 block w-full py-2 px-4 rounded-lg focus:border-gray-700 " placeholder="Password" /> #}
-                    {# </div> #}
                     <div class="py-2">
-                        <button type="submit" name="auth"
-                                class="border-2 border-gray-100 bg-purple-500 text-white font-bold tracking-wider block w-full p-2 rounded-lg hover:bg-purple-700">
-                            Authorize
+                        <button type="submit" name="login"
+                                class="border-2 border-gray-100 bg-purple-500 text-white font-bold tracking-wider block w-full p-1 rounded-lg hover:bg-purple-700">
+                            Login
                         </button>
                     </div>
                 </form>
             </div>
+    <p class ="text-center text-red">{{ message }}</p>
+<div class="text-center text-indigo-500">
+        <a href="/secretPage" >{{ link }}</a>
+</div>
 
 
 {% endblock %}
