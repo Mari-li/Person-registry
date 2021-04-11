@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Persons;
 
+use App\Config;
 use App\Models\Person;
 use App\Models\PersonCollection;
 use Medoo\Medoo;
@@ -12,12 +13,13 @@ class MysqlPersonsRepository implements PersonsRepository
 
     public function __construct()
     {
+        $dbConfig = Config::getInstance()->get('db');
         $this->database = new Medoo([
             'database_type' => 'mysql',
             'database_name' => 'person_registry',
             'server' => 'localhost',
-            'username' => 'marija',
-            'password' => 'mzm08111'
+            'username' => $dbConfig['user'],
+            'password' => $dbConfig['password']
         ]);
     }
 

@@ -37,7 +37,7 @@ class Messages
 
     public function authorized(Person $person): string
     {
-        return $person->getName() .', activation code is sent to your e-mail';
+        return $person->getName() . ', activation code is sent to your e-mail';
     }
 
     public function notValidOTP(): string

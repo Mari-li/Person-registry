@@ -54,7 +54,7 @@ class PersonController
                         $description
                     );
                     $this->personService->addPerson($person);
-                    $this->twig->display('messages.twig', ['message' => $this->messages->registerMessage($person)]);
+                    $this->twig->display('Messages.twig', ['message' => $this->messages->registerMessage($person)]);
                 }
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -68,7 +68,7 @@ class PersonController
         $mysqlKey = key($_POST);
         $foundedPersons = ($this->personService->searchPersons($mysqlKey, $_POST[$mysqlKey]))->getAll();
         if (empty($foundedPersons)) {
-            $this->twig->display('messages.twig', ['message' => $this->messages->notFoundMessage($mysqlKey, $_POST[$mysqlKey])]);
+            $this->twig->display('Messages.twig', ['message' => $this->messages->notFoundMessage($mysqlKey, $_POST[$mysqlKey])]);
         } else {
             $this->twig->display('PersonsInfoView.twig', ['persons' => $foundedPersons]);
         }
@@ -80,7 +80,7 @@ class PersonController
         $request = $_POST['delete'];
         $person = $this->personService->searchPersons('personal_code', $request)->getOne($request);
         $this->personService->deletePerson($person);
-        $this->twig->display('messages.twig', ['message' => $this->messages->deleteMessage($person)]);
+        $this->twig->display('Messages.twig', ['message' => $this->messages->deleteMessage($person)]);
     }
 
 
@@ -97,7 +97,7 @@ class PersonController
         $request = $_POST['update'];
         $person = $this->personService->searchPersons('personal_code', $request)->getOne($request);
         $this->personService->updatePersonsInformation($person, $_POST['description']);
-        $this->twig->display('messages.twig', ['message' => $this->messages->updateMessage($person)]);
+        $this->twig->display('Messages.twig', ['message' => $this->messages->updateMessage($person)]);
     }
 
 

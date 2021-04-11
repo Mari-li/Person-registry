@@ -2,6 +2,7 @@
 
 namespace App\Repositories\OTP;
 
+use App\Config;
 use App\Models\OTP;
 use Medoo\Medoo;
 
@@ -11,12 +12,13 @@ class MysqlOTPRepository implements OTPRepository
 
     public function __construct()
     {
+        $dbConfig = Config::getInstance()->get('db');
         $this->database = new Medoo([
             'database_type' => 'mysql',
             'database_name' => 'person_registry',
             'server' => 'localhost',
-            'username' => 'marija',
-            'password' => 'mzm08111'
+            'username' => $dbConfig['user'],
+            'password' => $dbConfig['password']
         ]);
     }
 
